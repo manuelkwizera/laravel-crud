@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Http\Requests\StudentFormRequest;
 
 class StudentController extends Controller
 {
@@ -35,7 +36,14 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $data = $request->validate();
+            Student::create('$data');
+            return redirect('/student')->with('message', 'data inserted successfully');
+        } catch (\Exception $e) {
+
+            return redirect('/student')->with('message', 'something went wrong'.$e);
+        }
     }
 
     /**
